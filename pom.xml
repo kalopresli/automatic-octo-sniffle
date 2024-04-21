@@ -24,20 +24,21 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			<version>3.2.3</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-			<version>3.2.3</version>
+			<version>3.2.5</version>
 		</dependency>
 		<!-- Spring AMQP Starter for RabbitMQ messaging -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-amqp</artifactId>
-			<version>3.2.3</version>
+			<version>3.2.5</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-cassandra</artifactId>
+			<version>3.2.5</version>
+		</dependency>
+
 		<!-- Lombok for boilerplate code reduction -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -49,7 +50,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
-			<version>3.2.3</version>
+			<version>3.2.5</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -60,6 +61,19 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>3.2.5</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 
 			<plugin>

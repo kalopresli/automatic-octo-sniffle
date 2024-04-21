@@ -38,6 +38,8 @@ public class RabbitMQConfig {
     public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(ConnectionFactory connectionFactory) {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
+        factory.setMissingQueuesFatal(false); // This prevents the application from failing if the queue isn't there
+        factory.setFailedDeclarationRetryInterval(5000L); // Retry every 5000 ms
         factory.setMessageConverter(converter());
         return factory;
     }
