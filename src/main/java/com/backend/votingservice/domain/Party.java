@@ -1,31 +1,31 @@
 package com.backend.votingservice.domain;
 
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.cassandra.core.mapping.Column;
+import org.springframework.data.cassandra.core.mapping.PrimaryKey;
+import org.springframework.data.cassandra.core.mapping.Table;
+
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
+@Table("party")
 public class Party {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @PrimaryKey
+    private UUID id = UUID.randomUUID(); // Automatically generate a UUID
 
+    @Column("name")
     private String name;
 
-    @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(name = "party_members", joinColumns = @JoinColumn(name = "party_id"))
-    @Column(name = "user_id")
+    @Column("member_ids")
     private Set<Long> memberIds = new HashSet<>();
 
-    // storing external movie IDs instead of direct Movie entity references
-    @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(name = "party_movie_suggestions", joinColumns = @JoinColumn(name = "party_id"))
-    @Column(name = "movie_external_id")
+    @Column("movie_external_ids")
     private Set<String> movieExternalIds = new HashSet<>();
 }
+

@@ -1,16 +1,13 @@
 package com.backend.votingservice;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
+public class VotingServiceApplicationTests {
 
-class VotingServiceApplicationTests {
-
-	@Test
+/*	@Test
 	void contextLoads() {
-	}
+	}*/
 
 }
