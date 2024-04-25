@@ -11,6 +11,7 @@
 	<properties>
 		<sonar.organization>kalopresli</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+		<jacoco.version>0.8.7</jacoco.version>
 	</properties>
 
 	<dependencies>
@@ -98,8 +99,52 @@
 		</dependency>
 	</dependencies>
 
+	<profiles>
+		<profile>
+			<id>coverage</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.jacoco</groupId>
+						<artifactId>jacoco-maven-plugin</artifactId>
+						<version>${jacoco.version}</version>
+						<executions>
+							<execution>
+								<id>prepare-agent</id>
+								<goals>
+									<goal>prepare-agent</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>report</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>report</goal>
+								</goals>
+								<configuration>
+									<formats>
+										<format>HTML</format>
+										<format>XML</format>
+										<format>CSV</format> <!-- Ensure CSV format for console output -->
+									</formats>
+								</configuration>
+							</execution>
+							<!-- Additional execution for logging coverage summary might be added here -->
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 	<build>
 		<plugins>
+
+			<plugin>
+				<groupId>org.sonarsource.scanner.maven</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>3.11.0.3922</version>
+			</plugin>
 
 			<plugin>
 				<groupId>org.jacoco</groupId>
