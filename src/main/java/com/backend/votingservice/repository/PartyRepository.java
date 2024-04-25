@@ -3,8 +3,11 @@ package com.backend.votingservice.repository;
 import com.backend.votingservice.domain.Party;
 import org.springframework.data.cassandra.repository.CassandraRepository;
 import org.springframework.data.cassandra.repository.Query;
+import org.springframework.stereotype.Repository;
+
 import java.util.Optional;
 
+@Repository
 public interface PartyRepository  extends CassandraRepository<Party, Long> {
 
     // WARNING: Using ALLOW FILTERING is generally not recommended for production systems as it can lead to severe performance issues due to full table scans, especially as data grows. This is a temporary solution to enable functionality but should be revisited.

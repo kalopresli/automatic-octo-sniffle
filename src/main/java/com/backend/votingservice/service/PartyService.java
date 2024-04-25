@@ -15,10 +15,12 @@ public class PartyService {
 
 
     public void processFavoriteMoviesMessage(UserFavoriteMoviesMessage message) {
-        Party party = findOrCreatePartyForUser(message.getUserId());
+        Party party = partyRepository.findPartyByMemberId(message.getUserId())
+                .orElse(new Party()); // Create a new Party if not found
         party.getMovieExternalIds().addAll(message.getFavoriteMovieIds());
         partyRepository.save(party);
     }
+
 
 
     private Party findOrCreatePartyForUser(Long userId) {
