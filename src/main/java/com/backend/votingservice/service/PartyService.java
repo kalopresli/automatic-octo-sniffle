@@ -15,8 +15,7 @@ public class PartyService {
 
 
     public void processFavoriteMoviesMessage(UserFavoriteMoviesMessage message) {
-        Party party = partyRepository.findPartyByMemberId(message.getUserId())
-                .orElse(new Party()); // Create a new Party if not found
+        Party party = findOrCreatePartyForUser(message.getUserId());
         party.getMovieExternalIds().addAll(message.getFavoriteMovieIds());
         partyRepository.save(party);
     }

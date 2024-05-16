@@ -35,6 +35,7 @@ public class MessageReceiverService {
 
     @RabbitListener(queues = "favoritesToVotingQueue")
     public void receiveFavoriteMoviesMessage(UserFavoriteMoviesMessage message) {
+        logger.info("Received favorite movies message: " + message.toString());
         partyService.processFavoriteMoviesMessage(message);
     }
 }
