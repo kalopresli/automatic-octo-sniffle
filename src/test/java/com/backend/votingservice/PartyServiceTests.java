@@ -13,14 +13,13 @@ import static org.assertj.core.api.Assertions.*;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.junit.jupiter.api.extension.ExtendWith;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+
+import java.util.*;
 
 @ExtendWith(MockitoExtension.class)
 public class PartyServiceTests {
@@ -55,14 +54,33 @@ public class PartyServiceTests {
 
     @Test
     public void whenPartyDoesNotExist_createAndAddFavoriteMovies() {
-        UserFavoriteMoviesMessage message = new UserFavoriteMoviesMessage(2L, new HashSet<>(List.of("movie3")));
-        when(partyRepository.findPartyByMemberId(2L)).thenReturn(Optional.empty());
+        // Arrange
+        Long userId = 2L;
+        Set<String> favoriteMovies = new HashSet<>(List.of("movie3"));
+        UserFavoriteMoviesMessage message = new UserFavoriteMoviesMessage(userId, favoriteMovies);
+
+        when(partyRepository.findPartyByMemberId(userId)).thenReturn(Optional.empty());
         when(partyRepository.save(any(Party.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
+        // Act
         partyService.processFavoriteMoviesMessage(message);
 
-        verify(partyRepository).save(any(Party.class));
+        // Assert
+        ArgumentCaptor<Party> partyCaptor = ArgumentCaptor.forClass(Party.class);
+        verify(partyRepository, times(2)).save(partyCaptor.capture());
+
+        // Verify the first save (create new party)
+        Party createdParty = partyCaptor.getAllValues().get(0);
+        assertNotNull(createdParty);
+        assertThat(createdParty.getName()).isEqualTo("New Watch Party By " + userId);
+        assertThat(createdParty.getMemberIds()).containsExactly(userId);
+
+        // Verify the second save (add favorite movies)
+        Party savedParty = partyCaptor.getAllValues().get(1);
+        assertNotNull(savedParty);
+        assertThat(savedParty.getMovieExternalIds()).containsExactlyInAnyOrderElementsOf(favoriteMovies);
     }
+
 
     @Test
     public void whenPartyDoesNotExist_getPartyThrowsException() {
