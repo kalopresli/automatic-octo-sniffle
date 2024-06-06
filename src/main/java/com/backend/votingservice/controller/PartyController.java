@@ -16,8 +16,8 @@ public class PartyController {
     private final PartyService partyService;
     private final MessageSenderService messageSenderService;
 
-    @GetMapping
-    public Party getParties (@RequestBody Long userId) throws Exception {
+    @GetMapping("/{userId}")
+    public Party getParties(@PathVariable Long userId) throws Exception {
         return partyService.getParty(userId);
     }
 
